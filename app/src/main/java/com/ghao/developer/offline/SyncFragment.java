@@ -1,6 +1,7 @@
 package com.ghao.developer.offline;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.ghao.developer.offline.dao.SyncDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,11 +87,16 @@ public class SyncFragment extends Fragment {
     }
     public List<Map<String, Object>> getData(){
         List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
-        for (int i = 0; i < 10; i++) {
-            Map<String, Object> map=new HashMap<String, Object>();
+        Map<String, Object> map=new HashMap<String, Object>();
+
+        SyncDao syncDao = new SyncDao(getActivity());
+        Cursor cursor = syncDao.getAllData();
+        while(cursor.moveToNext()){
+            String rkdbh  = cursor.getString(1);
+            map.put("title",rkdbh);
+            String czr = cursor.getString(6);
+            map.put("info",czr);
             map.put("image", R.drawable.ic_home_black_24dp);
-            map.put("title", "这是一个标题"+i);
-            map.put("info", "这是一个详细信息" + i);
             list.add(map);
         }
         return list;

@@ -1,6 +1,7 @@
 package com.ghao.developer.offline;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,11 +19,13 @@ import android.widget.TextView;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.ghao.developer.offline.dao.InDao;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
@@ -99,11 +102,22 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
             IntentResult scanResult = IntentIntegrator.parseActivityResult(resultCode, data);
             final String qrContent = scanResult.getContents();
             System.out.println("扫描结果:" + qrContent);
+
             Toast.makeText(context, "扫描结果:" + qrContent, Toast.LENGTH_SHORT).show();
-            if("in".equals(this.operator)){
-                System.out.println("执行入库操作:"+qrContent);
-            }else if("out".equals(this.operator)){
-                System.out.println("执行出库操作:"+qrContent);
+            if(qrContent!=null || true){
+                if("in".equals(this.operator)){
+                    System.out.println("执行入库操作:"+qrContent);
+                    InDao inDao = new InDao(context);
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("rkdbh",qrContent);
+                    contentValues.put("htbh","htbh001");
+                    contentValues.put("pcbh","pcbh001");
+                    contentValues.put("rksj",new Date().getTime());
+                    contentValues.put("czr","ghao");
+                    inDao.actionIn(contentValues);
+                }else if("out".equals(this.operator)){
+                    System.out.println("执行出库操作:"+qrContent);
+                }
             }
         }
     }
