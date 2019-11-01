@@ -87,11 +87,11 @@ public class SyncFragment extends Fragment {
     }
     public List<Map<String, Object>> getData(){
         List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
-        Map<String, Object> map=new HashMap<String, Object>();
 
         SyncDao syncDao = new SyncDao(getActivity());
         Cursor cursor = syncDao.getAllData();
         while(cursor.moveToNext()){
+            Map<String, Object> map=new HashMap<String, Object>();
             String rkdbh  = cursor.getString(1);
             map.put("title",rkdbh);
             String czr = cursor.getString(6);

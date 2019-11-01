@@ -1,6 +1,7 @@
 package com.ghao.developer.offline;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
     ViewPager viewPager;
     BottomNavigationView navigation;
     private String operator = "in";
+    List<Fragment> fragments = new ArrayList<>();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
         viewPager = findViewById(R.id.view_pager);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        List<Fragment> fragments = new ArrayList<>();
+
         fragments.add(new InFragment());
         fragments.add(new OutFragment());
         fragments.add(new SyncFragment());
@@ -107,14 +109,8 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
             if(qrContent!=null || true){
                 if("in".equals(this.operator)){
                     System.out.println("执行入库操作:"+qrContent);
-                    InDao inDao = new InDao(context);
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put("rkdbh",qrContent);
-                    contentValues.put("htbh","htbh001");
-                    contentValues.put("pcbh","pcbh001");
-                    contentValues.put("rksj",new Date().getTime());
-                    contentValues.put("czr","ghao");
-                    inDao.actionIn(contentValues);
+                     InFragment fragment = (InFragment) fragments.get(0);
+                     fragment.setEditTextValue(qrContent);
                 }else if("out".equals(this.operator)){
                     System.out.println("执行出库操作:"+qrContent);
                 }

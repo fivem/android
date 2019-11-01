@@ -22,7 +22,8 @@ public class InDao {
      * 根据入款单编号执行入库操作
      * @param contentValues
      */
-    public void actionIn(ContentValues contentValues){
+    public long actionIn(ContentValues contentValues){
+        long resultNumber = 0;
         //查询货品是否已经执行过入库(在sqlite数据库中是否已经存在.防止多次扫码入库)
         String rkdbh = contentValues.getAsString("rkdbh");
         Cursor cursor = dbHelper.query("rkd","select * from rkd where rkdbh='"+rkdbh+"' or rkdbh is null");
@@ -30,7 +31,8 @@ public class InDao {
         if(cursor!=null && cursor.getCount()!=0 && false){
             Toast.makeText(context, "编号["+rkdbh+"]已经入库.", Toast.LENGTH_SHORT).show();
         }else{
-            dbHelper.insert("rkd",contentValues);
+            resultNumber = dbHelper.insert("rkd",contentValues);
         }
+        return resultNumber;
     }
 }

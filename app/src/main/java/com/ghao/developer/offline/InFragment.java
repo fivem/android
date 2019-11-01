@@ -1,5 +1,6 @@
 package com.ghao.developer.offline;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ghao.developer.offline.dao.InDao;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
+
+import java.util.Date;
 
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
@@ -37,7 +42,9 @@ public class InFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Context context;
     private OnFragmentInteractionListener mListener;
+    private View view;
 
     public InFragment() {
         // Required empty public constructor
@@ -64,6 +71,7 @@ public class InFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -82,10 +90,35 @@ public class InFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_in, container, false);
+        view = inflater.inflate(R.layout.fragment_in, container, false);
         Button QrOpen =  (Button) view.findViewById(R.id.scan_in);
         QrOpen.setOnClickListener(QrOpenListener);
+
+        Button sureButton = view.findViewById(R.id.sure_In);
+        sureButton.setOnClickListener(sureButtonClickListener);
         return view;
+    }
+    private Button.OnClickListener sureButtonClickListener = new Button.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            EditText rkdbhText =(EditText) view.findViewById (R.id.rkdbhText);
+            InDao inDao = new InDao(context);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("rkdbh",rkdbhText.getText().toString());
+            contentValues.put("htbh","htbh001");
+            contentValues.put("pcbh","pcbh001");
+            contentValues.put("rksj",new Date().getTime());
+            contentValues.put("czr","ghao");
+            long resultNumber = inDao.actionIn(contentValues);
+            if(resultNumber>0){
+                Toast.makeText(context, "入库成功", Toast.LENGTH_SHORT).show();
+                rkdbhText.setText(null);
+            }
+        }
+    };
+    public void setEditTextValue(String scanResult){
+        EditText rkdbhText =(EditText) view.findViewById (R.id.rkdbhText);
+        rkdbhText.setText(scanResult);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
