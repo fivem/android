@@ -1,6 +1,7 @@
 package com.ghao.developer.offline;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class SyncFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Context mContext;
+    private Context content;
     private ListView listView;
     private OnFragmentInteractionListener mListener;
 
@@ -73,7 +74,7 @@ public class SyncFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mContext = getActivity();
+        this.content = getActivity();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -89,12 +90,15 @@ public class SyncFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.sync_listview);
         List<Map<String, Object>> list=getData();
         listView.setAdapter(new ListViewAdapter(getActivity(), list));
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = view.findViewById(R.id.listview_textview);
-                Toast.makeText(mContext, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(content, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(content, DetailActivity.class);
+                intent.putExtra("title",textView.getText());
+                startActivity(intent);
             }
         });
 
@@ -109,8 +113,8 @@ public class SyncFragment extends Fragment {
             Map<String, Object> map=new HashMap<String, Object>();
             String rkdbh  = cursor.getString(1);
             map.put("title",rkdbh);
-            String czr = cursor.getString(7);
-            long millisecond = cursor.getLong(6);
+            String czr = cursor.getString(6);
+            long millisecond = cursor.getLong(5);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
             // time为转换格式后的字符串

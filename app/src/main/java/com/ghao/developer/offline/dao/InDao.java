@@ -14,7 +14,7 @@ public class InDao {
     public InDao(Context context) {
         this.context = context;
         List<String> createTableSqls = new ArrayList<String>();
-        dbHelper = DBHelper.getInstance(context,"gh.store",2,createTableSqls);
+        dbHelper = DBHelper.getInstance(context,"gh.store",3,createTableSqls);
     }
 
     /**

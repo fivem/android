@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InFragment">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="124dp" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_white_frame">
+
+            <TextView
+                android:id="@+id/rkdbh"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:padding="1dp"
+                android:textSize="11sp"
+                android:text="入库单编号"/>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/rkdbh"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/rkdbhText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/view1"
+                android:ems="19"
+                android:background="@color/white"
+                android:inputType="text"
+                android:padding="1dp"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="176dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_white_frame">
+
+            <TextView
+                android:id="@+id/htbh"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:padding="1dp"
+                android:textSize="11sp"
+                android:text="合同编号"/>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/htbh"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/htbhText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/view2"
+                android:ems="19"
+                android:inputType="text"
+                android:padding="1dp"
+                android:textSize="12sp"
+                android:background="@color/white"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="230dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_white_frame">
+
+            <TextView
+                android:id="@+id/pcbh"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:padding="1dp"
+                android:textSize="11sp"
+                android:text="批次编号"/>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/pcbh"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/pcbhText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/view3"
+                android:ems="19"
+                android:inputType="text"
+                android:padding="1dp"
+                android:textSize="12sp"
+                android:background="@color/white"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="284dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_white_frame">
+
+            <TextView
+                android:id="@+id/czsj"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:lines="1"
+                android:padding="1dp"
+                android:textSize="11sp"
+                android:text="操作时间"/>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_toRightOf="@+id/czsj"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/czsjText"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="2dp"
+                android:layout_toEndOf="@+id/view4"
+                android:ems="19"
+                android:inputType="text"
+                android:padding="1dp"
+                android:textSize="12sp"
+                android:background="@color/white"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
