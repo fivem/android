@@ -17,10 +17,14 @@ import android.widget.Toast;
 import com.ghao.developer.offline.dao.DBHelper;
 import com.ghao.developer.offline.dao.SyncDao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 /**
@@ -89,7 +93,7 @@ public class SyncFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = view.findViewById(R.id.listview_textview);
-                Toast.makeText(mContext, "点击的title", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -105,8 +109,13 @@ public class SyncFragment extends Fragment {
             Map<String, Object> map=new HashMap<String, Object>();
             String rkdbh  = cursor.getString(1);
             map.put("title",rkdbh);
-            String czr = cursor.getString(6);
-            map.put("info",czr);
+            String czr = cursor.getString(7);
+            long millisecond = cursor.getLong(6);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+            // time为转换格式后的字符串
+            String time = dateFormat.format(new Date(millisecond)) ;
+            map.put("time",time);
             map.put("image", R.drawable.ic_home_black_24dp);
             list.add(map);
         }

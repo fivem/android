@@ -24,7 +24,7 @@ public class ListViewAdapter extends BaseAdapter {
     public final class Assemble{
         public ImageView mImageView;
         public TextView mTextView;
-        public Button mButton;
+        public TextView mButton;
     }
     @Override
     public int getCount() {
@@ -49,13 +49,14 @@ public class ListViewAdapter extends BaseAdapter {
             view = mLayoutInflater.inflate(R.layout.sync_listview,null);
             assemble.mImageView =(ImageView) view.findViewById(R.id.listview_image);
             assemble.mTextView = (TextView) view.findViewById(R.id.listview_textview);
-            assemble.mButton = (Button) view.findViewById(R.id.listview_detail);
+            assemble.mButton = (TextView) view.findViewById(R.id.listview_detail);
             view.setTag(assemble);
         }else{
             assemble = (Assemble) view.getTag();
         }
         assemble.mTextView.setText((String)data.get(i).get("title"));
         assemble.mImageView.setBackgroundResource((Integer) data.get(i).get("image"));
+        assemble.mButton.setText((String)data.get(i).get("time"));
         return view;
     }
 }
