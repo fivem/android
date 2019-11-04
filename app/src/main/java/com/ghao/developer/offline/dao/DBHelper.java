@@ -26,6 +26,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static DBHelper getInstance(Context context,String dbName,int dbVersion,List<String> tableSqls){
+        if(tableSqls.size()==0){
+            tableSqls.add("create table if not exists rkd(id INTEGER primary key AUTOINCREMENT,rkdbh text,htbh text,pcbh,text,status INTEGER,rksj text,czr text)");
+        }
         DBHelper dbHelper = sDBHelperHashMap.get(dbName);
         if(dbHelper==null){
             dbHelper = new DBHelper(context,dbName,dbVersion,tableSqls);

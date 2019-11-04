@@ -14,7 +14,6 @@ public class InDao {
     public InDao(Context context) {
         this.context = context;
         List<String> createTableSqls = new ArrayList<String>();
-        createTableSqls.add("create table if not exists rkd(id INTEGER primary key AUTOINCREMENT,rkdbh text,htbh text,pcbh,text,status INTEGER,rksj text,czr text)");
         dbHelper = DBHelper.getInstance(context,"gh.store",2,createTableSqls);
     }
 
