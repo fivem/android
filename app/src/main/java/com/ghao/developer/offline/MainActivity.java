@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
             System.out.println("扫描结果:" + qrContent);
 
             Toast.makeText(context, "扫描结果:" + qrContent, Toast.LENGTH_SHORT).show();
-            if(qrContent!=null || true){
+            if(qrContent!=null){
                 if("in".equals(this.operator)){
                     System.out.println("执行入库操作:"+qrContent);
                      InFragment fragment = (InFragment) fragments.get(0);

@@ -28,7 +28,7 @@ public class InDao {
         String rkdbh = contentValues.getAsString("rkdbh");
         Cursor cursor = dbHelper.query("rkd","select * from rkd where rkdbh='"+rkdbh+"' or rkdbh is null");
         //TODO
-        if(cursor!=null && cursor.getCount()!=0 && false){
+        if(cursor!=null && cursor.getCount()!=0){
             Toast.makeText(context, "编号["+rkdbh+"]已经入库.", Toast.LENGTH_SHORT).show();
         }else{
             resultNumber = dbHelper.insert("rkd",contentValues);

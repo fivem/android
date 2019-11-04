@@ -102,17 +102,22 @@ public class InFragment extends Fragment {
         @Override
         public void onClick(View v) {
             EditText rkdbhText =(EditText) view.findViewById (R.id.rkdbhText);
+            String rkdbh = rkdbhText.getText().toString();
             InDao inDao = new InDao(context);
             ContentValues contentValues = new ContentValues();
-            contentValues.put("rkdbh",rkdbhText.getText().toString());
+            contentValues.put("rkdbh",rkdbh);
             contentValues.put("htbh","htbh001");
             contentValues.put("pcbh","pcbh001");
             contentValues.put("rksj",new Date().getTime());
             contentValues.put("czr","ghao");
-            long resultNumber = inDao.actionIn(contentValues);
-            if(resultNumber>0){
-                Toast.makeText(context, "入库成功", Toast.LENGTH_SHORT).show();
-                rkdbhText.setText(null);
+            if("".equals(rkdbh)){
+                Toast.makeText(context, "入库单编号为空", Toast.LENGTH_SHORT).show();
+            }else{
+                long resultNumber = inDao.actionIn(contentValues);
+                if(resultNumber>0){
+                    Toast.makeText(context, "入库成功", Toast.LENGTH_SHORT).show();
+                    rkdbhText.setText(null);
+                }
             }
         }
     };
