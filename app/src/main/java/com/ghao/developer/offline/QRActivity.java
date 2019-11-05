@@ -1,10 +1,11 @@
 package com.ghao.developer.offline;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class QRActivity extends AppCompatActivity {
 

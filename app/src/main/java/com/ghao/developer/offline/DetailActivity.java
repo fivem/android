@@ -2,7 +2,6 @@ package com.ghao.developer.offline;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -13,14 +12,18 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         Intent intent = getIntent();
         String rkdbh = intent.getStringExtra("title");
+        setTitle(rkdbh+"明细");
         SyncDao syncDao = new SyncDao(this);
         Cursor cursor = syncDao.getDetailByRkdbh(rkdbh);
         while(cursor.moveToNext()){

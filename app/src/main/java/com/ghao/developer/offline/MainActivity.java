@@ -8,12 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -21,13 +16,21 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.ghao.developer.offline.dao.InDao;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
@@ -63,7 +66,21 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        DownloadTask downloadTask = new DownloadTask(this);
+        String url = "http://94.191.126.165:88/zebra-release.apk";
+        downloadTask.execute(url);
+       /* Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        File file = new File(Environment.getExternalStorageDirectory(),"oa_ly.apk");
+        intent.setDataAndType(FileProvider.getUriForFile(this.context, "com.ghao.developer.offline.fileprovider", file),"application/vnd.android.package-archive");
+        //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivity(intent);*/
+
+
+        /*navigation = (BottomNavigationView) findViewById(R.id.navigation);
         viewPager = findViewById(R.id.view_pager);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -90,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
             public void onPageScrollStateChanged(int i) {
 
             }
-        });
+        });*/
     }
 
     @Override

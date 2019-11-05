@@ -12,6 +12,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
+        android:networkSecurityConfig="@xml/network_config"
         android:icon="@mipmap/ic_launcher_cus"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_cus_round"
@@ -27,8 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity" />
         <activity android:name="com.ghao.developer.offline.DetailActivity" />
-    </application>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.ghao.developer.offline.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
 </manifest>
