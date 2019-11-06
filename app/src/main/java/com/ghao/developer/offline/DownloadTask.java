@@ -1,13 +1,19 @@
 package com.ghao.developer.offline;
 
+import androidx.core.app.NotificationCompat;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,10 +31,8 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private boolean mSuccess = false;
     private Context context;
-    private Activity activity;
-    public DownloadTask(Context context, Activity activity){
+    public DownloadTask(Context context){
         this.context = context;
-        this.activity = activity;
     }
     @Override
     protected void onPostExecute(Boolean aBoolean) {
@@ -64,11 +68,34 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
         InputStream is = null;
         FileOutputStream fos = null;
         try {
+
+            Intent intent = new Intent(this.context,this.getClass());
+            PendingIntent pi = PendingIntent.getActivity(this.context,0,intent,0);
+            NotificationManager manager = (NotificationManager) this.context.getSystemService(this.context.NOTIFICATION_SERVICE);
+
+            Notification.Builder notification = new Notification
+                    .Builder(this.context,"default")
+                    .setContentTitle("zebra新版下载")
+                    .setContentText("zebra新版下载")
+                    .setWhen(System.currentTimeMillis())
+                    .setSmallIcon(R.mipmap.ic_launcher_cus_round)
+                    .setContentIntent(pi)
+                    .setChannelId(this.context.getPackageName())
+                    .setAutoCancel(true);
+
+            NotificationChannel channel = new NotificationChannel(
+                    this.context.getPackageName(),
+                    "版本更新",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            manager.createNotificationChannel(channel);
+
+
             String savePath = createFolderAndPath();
             File file = new File(savePath,getNameFromUrl(url));
             fos = new FileOutputStream(file);
             is = response.body().byteStream();
-
+            manager.notify(0,notification.build());
             long sum=0;
             long total = response.body().contentLength();
             while((len=is.read(bytes))!=-1){
@@ -76,6 +103,8 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
                 sum+=len;
                 int progress = (int) (sum*1.0f/total*100);
                 publishProgress(progress);
+                notification.setProgress((int)total,(int)sum,false);
+                manager.notify(0,notification.build());
             }
             fos.flush();
             installApk(file);
@@ -102,7 +131,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
        // intent.setDataAndType(getUriFromFile(file),"image/png");
         intent.setDataAndType(getUriFromFile(file),"application/vnd.android.package-archive");
-         activity.startActivity(intent);
+         context.startActivity(intent);
 
 
     }

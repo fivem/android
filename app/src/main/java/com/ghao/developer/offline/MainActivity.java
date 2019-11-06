@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -68,14 +69,19 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        PackageManager pm = getPackageManager();
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-        DownloadTask downloadTask = new DownloadTask(this,this);
-        //String url = "http://94.191.126.165:88/zebra.png";
-        String url = "http://94.191.126.165:88/app-release.apk";
-        downloadTask.execute(url);
+        Integer perm = context.checkCallingOrSelfPermission( "android.permission.WRITE_EXTERNAL_STORAGE");
+        if(perm==PackageManager.PERMISSION_GRANTED){
+            float rand = (float) (Math.random()*10f);
+            Log.e("random:",rand+"");
+            if(rand > 0.0f){
+                DownloadTask downloadTask = new DownloadTask(this);
+                //String url = "http://94.191.126.165:88/zebra.png";
+                String url = "http://94.191.126.165:88/app-release.apk";
+                downloadTask.execute(url);
+            }
+        }else{
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         viewPager = findViewById(R.id.view_pager);
