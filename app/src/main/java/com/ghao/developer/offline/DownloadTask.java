@@ -4,6 +4,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,8 +25,10 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private boolean mSuccess = false;
     private Context context;
-    public DownloadTask(Context context){
+    private Activity activity;
+    public DownloadTask(Context context, Activity activity){
         this.context = context;
+        this.activity = activity;
     }
     @Override
     protected void onPostExecute(Boolean aBoolean) {
@@ -73,7 +77,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
                 int progress = (int) (sum*1.0f/total*100);
                 publishProgress(progress);
             }
-
+            fos.flush();
             installApk(file);
             return true;
 
@@ -82,7 +86,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
             return false;
         }finally {
             try {
-                fos.flush();
+
                 fos.close();
                 is.close();
                 response.close();
@@ -94,13 +98,16 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
 
     private void installApk(File file){
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+       // intent.setDataAndType(getUriFromFile(file),"image/png");
         intent.setDataAndType(getUriFromFile(file),"application/vnd.android.package-archive");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        this.context.startActivity(intent);
+         activity.startActivity(intent);
+
+
     }
     private String createFolderAndPath() throws IOException{
-        String fileUrl = Environment.getExternalStorageDirectory()+"/upgrade";
+        String fileUrl = Environment.getExternalStorageDirectory().getPath()+"/upgrade";
         File downloadFile = new File(fileUrl);
         if(!downloadFile.mkdirs()){
             downloadFile.createNewFile();

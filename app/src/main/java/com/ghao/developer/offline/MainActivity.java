@@ -1,9 +1,11 @@
 package com.ghao.developer.offline;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -22,6 +24,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,24 +69,17 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DownloadTask downloadTask = new DownloadTask(this);
-        String url = "http://94.191.126.165:88/zebra-release.apk";
+        PackageManager pm = getPackageManager();
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+        DownloadTask downloadTask = new DownloadTask(this,this);
+        //String url = "http://94.191.126.165:88/zebra.png";
+        String url = "http://94.191.126.165:88/app-release.apk";
         downloadTask.execute(url);
-       /* Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        File file = new File(Environment.getExternalStorageDirectory(),"oa_ly.apk");
-        intent.setDataAndType(FileProvider.getUriForFile(this.context, "com.ghao.developer.offline.fileprovider", file),"application/vnd.android.package-archive");
-        //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        startActivity(intent);*/
 
-
-        /*navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         viewPager = findViewById(R.id.view_pager);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
 
         fragments.add(new InFragment());
         fragments.add(new OutFragment());
@@ -107,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
             public void onPageScrollStateChanged(int i) {
 
             }
-        });*/
+        });
     }
 
     @Override
