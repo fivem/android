@@ -14,7 +14,7 @@ public class InDao {
     public InDao(Context context) {
         this.context = context;
         List<String> createTableSqls = new ArrayList<String>();
-        dbHelper = DBHelper.getInstance(context,"gh.store",3,createTableSqls);
+        dbHelper = DBHelper.getInstance(context,Const.DB_NAME,Const.VERSION,createTableSqls);
     }
 
     /**
@@ -25,7 +25,7 @@ public class InDao {
         long resultNumber = 0;
         //查询货品是否已经执行过入库(在sqlite数据库中是否已经存在.防止多次扫码入库)
         String rkdbh = contentValues.getAsString("rkdbh");
-        Cursor cursor = dbHelper.query("rkd","select * from rkd where rkdbh='"+rkdbh+"' or rkdbh is null");
+        Cursor cursor = dbHelper.query("select * from rkd where rkdbh='"+rkdbh+"' or rkdbh is null");
         //TODO
         if(cursor!=null && cursor.getCount()!=0){
             Toast.makeText(context, "编号["+rkdbh+"]已经入库.", Toast.LENGTH_SHORT).show();

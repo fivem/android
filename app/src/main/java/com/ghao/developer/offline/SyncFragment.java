@@ -1,15 +1,21 @@
 package com.ghao.developer.offline;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +55,7 @@ public class SyncFragment extends Fragment {
     private Context content;
     private ListView listView;
     private OnFragmentInteractionListener mListener;
+    private SyncDao syncDao;
 
     public SyncFragment() {
         // Required empty public constructor
@@ -76,6 +83,7 @@ public class SyncFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.content = getActivity();
+        syncDao = new SyncDao(content);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -87,9 +95,15 @@ public class SyncFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sync, container, false);
+        //入库记录按钮点击事件
+        Button recordsIn = (Button) view.findViewById(R.id.records_in);
+        recordsIn.setOnClickListener(recordsInButtonClickListener);
+        //出库记录按钮点击事件
+        Button recordsOut = (Button) view.findViewById(R.id.records_out);
+        recordsOut.setOnClickListener(recordsOutButtonClickListener);
 
         listView = (ListView)view.findViewById(R.id.sync_listview);
-        List<Map<String, Object>> list=getData();
+        List<Map<String, Object>> list=getInData();
         listView.setAdapter(new ListViewAdapter(getActivity(), list));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -105,11 +119,34 @@ public class SyncFragment extends Fragment {
 
         return view;
     }
-    public List<Map<String, Object>> getData(){
-        List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
 
-        SyncDao syncDao = new SyncDao(getActivity());
-        Cursor cursor = syncDao.getAllData();
+    private Button.OnClickListener recordsInButtonClickListener = new Button.OnClickListener(){
+        @SuppressLint("ResourceAsColor")
+        @Override
+        public void onClick(View view) {
+            List<Map<String, Object>> list = getInData();
+            listView.setAdapter(new ListViewAdapter(getActivity(), list));
+        }
+    };
+    private final Button.OnClickListener recordsOutButtonClickListener = new Button.OnClickListener() {
+        @SuppressLint("ResourceAsColor")
+        @Override
+        public void onClick(View view) {
+            List<Map<String, Object>> list = getOutData();
+            listView.setAdapter(new ListViewAdapter(getActivity(), list));
+        }
+    };
+    public List<Map<String, Object>> getInData(){
+        Cursor cursor = syncDao.getInData();
+        return getData(cursor);
+    }
+    public List<Map<String, Object>> getOutData(){
+        Cursor cursor = syncDao.getOutData();
+        return getData(cursor);
+    }
+
+    public List<Map<String, Object>> getData(Cursor cursor){
+        List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
         while(cursor.moveToNext()){
             Map<String, Object> map=new HashMap<String, Object>();
             String rkdbh  = cursor.getString(1);

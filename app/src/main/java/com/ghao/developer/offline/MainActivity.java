@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
         if(perm==PackageManager.PERMISSION_GRANTED){
             float rand = (float) (Math.random()*10f);
             Log.e("random:",rand+"");
-            if(rand > 0.0f){
+            if(rand > 5.0f){
                 DownloadTask downloadTask = new DownloadTask(this);
                 //String url = "http://94.191.126.165:88/zebra.png";
                 String url = "http://94.191.126.165:88/app-release.apk";

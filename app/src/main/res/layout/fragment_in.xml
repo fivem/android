@@ -162,9 +162,9 @@
         android:layout_marginTop="380dp"
         android:layout_centerHorizontal="true"
         android:text="@string/scan_in"
-        android:background="@color/blue"
-        android:textColor="@color/white"
-        android:textSize="21sp" />
+        android:background="@drawable/button_selectors"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/sure_In"
@@ -174,7 +174,7 @@
         android:layout_centerHorizontal="true"
         android:padding="1dp"
         android:text="确认入库"
-        android:background="@color/blue"
-        android:textColor="@color/white"
-        android:textSize="21sp" />
+        android:background="@drawable/button_selectors"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 </RelativeLayout>

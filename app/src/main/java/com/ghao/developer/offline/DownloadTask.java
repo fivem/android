@@ -76,7 +76,7 @@ public class DownloadTask extends AsyncTask<String,Integer,Boolean> {
             Notification.Builder notification = new Notification
                     .Builder(this.context,"default")
                     .setContentTitle("zebra新版下载")
-                    .setContentText("zebra新版下载")
+                   // .setContentText("zebra新版下载")
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher_cus_round)
                     .setContentIntent(pi)

@@ -28,6 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static DBHelper getInstance(Context context,String dbName,int dbVersion,List<String> tableSqls){
         if(tableSqls.size()==0){
             tableSqls.add("create table if not exists rkd(id INTEGER primary key AUTOINCREMENT,rkdbh text,htbh text,pcbh text,status INTEGER,rksj text,czr text)");
+            tableSqls.add("create table if not exists ckd(id INTEGER primary key AUTOINCREMENT,ckdbh text,htbh text,pcbh text,status INTEGER,rksj text,czr text)");
         }
         DBHelper dbHelper = sDBHelperHashMap.get(dbName);
         if(dbHelper==null){
@@ -95,7 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor query(String tableName,String sql){
+    public Cursor query(String sql){
         DBHelper dbHelper = sDBHelperHashMap.get(currentDbName);
         synchronized (dbHelper){
             SQLiteDatabase mSQLiteDatabase = dbHelper.getReadableDatabase();

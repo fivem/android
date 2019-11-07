@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <Button
+        android:id="@+id/records_in"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="false"
+        android:text="入库记录"
+        android:background="@drawable/button_selectors"
+        android:textSize="13sp" />
+    <Button
+        android:id="@+id/records_out"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="100dp"
+        android:layout_centerHorizontal="false"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:text="出库记录"
+        android:background="@drawable/button_selectors"
+        />
+    <Button
+        android:id="@+id/sync_btn"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="320dp"
+        android:layout_centerHorizontal="false"
+        android:text="同步数据"
+        android:background="@drawable/button_selectors"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
     <ListView
         android:id="@+id/sync_listview"
+        android:layout_marginTop="40dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
