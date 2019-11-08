@@ -38,7 +38,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
 
-public class MainActivity extends AppCompatActivity implements InFragment.OnFragmentInteractionListener,OutFragment.OnFragmentInteractionListener,SyncFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, InFragment.OnFragmentInteractionListener,OutFragment.OnFragmentInteractionListener,SyncFragment.OnFragmentInteractionListener {
 
     private Context context = this;
     ViewPager viewPager;
@@ -159,5 +159,10 @@ public class MainActivity extends AppCompatActivity implements InFragment.OnFrag
         //打开扫描界面扫描条形码或二维码
         Intent intent = new Intent(context, CaptureActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
     }
 }
