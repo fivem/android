@@ -1,6 +1,7 @@
 package com.ghao.developer.offline;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,15 +9,19 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +61,7 @@ public class SyncFragment extends Fragment {
     private ListView listView;
     private OnFragmentInteractionListener mListener;
     private SyncDao syncDao;
+    private static final int COMPLETED = 0;
 
     public SyncFragment() {
         // Required empty public constructor
@@ -102,6 +108,9 @@ public class SyncFragment extends Fragment {
         Button recordsOut = (Button) view.findViewById(R.id.records_out);
         recordsOut.setOnClickListener(recordsOutButtonClickListener);
         //同步按钮点击事件
+        Button sycnBtn = (Button) view.findViewById(R.id.sync_btn);
+        sycnBtn.setOnClickListener(syncBtnButtonClickListener);
+
 
         listView = (ListView)view.findViewById(R.id.sync_listview);
         List<Map<String, Object>> list=getInData();
@@ -137,6 +146,37 @@ public class SyncFragment extends Fragment {
             listView.setAdapter(new ListViewAdapter(getActivity(), list));
         }
     };
+    private final Button.OnClickListener syncBtnButtonClickListener = new Button.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+           final ProgressBar progressBar = getActivity().findViewById(R.id.progressbar);
+            progressBar.setMax(200);
+            progressBar.setProgress(20);
+            progressBar.setVisibility(View.VISIBLE); //To show ProgressBar
+            getActivity().findViewById(R.id.progressMusk).setVisibility(View.VISIBLE);
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            new Thread(){
+                int index = 20;
+                @Override
+                public void run(){
+                    while (index <= 200){
+                        progressBar.setProgress(index);
+                        index+=10;
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                  //  progressBar.setVisibility(View.GONE);
+
+                    Message message = new Message();
+                    message.what = COMPLETED;
+                    mHandler.sendMessage(message);
+                }
+            }.start();
+        }
+    };
     public List<Map<String, Object>> getInData(){
         Cursor cursor = syncDao.getInData();
         return getData(cursor);
@@ -164,6 +204,18 @@ public class SyncFragment extends Fragment {
         }
         return list;
     }
+
+    private Handler mHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == COMPLETED) {
+                getActivity().findViewById(R.id.progressMusk).setVisibility(View.INVISIBLE);
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+        }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
