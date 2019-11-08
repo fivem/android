@@ -101,6 +101,7 @@ public class SyncFragment extends Fragment {
         //出库记录按钮点击事件
         Button recordsOut = (Button) view.findViewById(R.id.records_out);
         recordsOut.setOnClickListener(recordsOutButtonClickListener);
+        //同步按钮点击事件
 
         listView = (ListView)view.findViewById(R.id.sync_listview);
         List<Map<String, Object>> list=getInData();
