@@ -24,8 +24,15 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView navigation;
     private String operator = "in";
     List<Fragment> fragments = new ArrayList<>();
+    private final Logger LOG = LoggerFactory.getLogger(MainActivity.class);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,13 +79,27 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         Integer perm = context.checkCallingOrSelfPermission( "android.permission.WRITE_EXTERNAL_STORAGE");
         if(perm==PackageManager.PERMISSION_GRANTED){
-            float rand = (float) (Math.random()*10f);
-            Log.e("random:",rand+"");
-            if(rand > 5.0f){
-                DownloadTask downloadTask = new DownloadTask(this);
-                //String url = "http://94.191.126.165:88/zebra.png";
-                String url = "http://94.191.126.165:88/app-release.apk";
-                downloadTask.execute(url);
+            LOG.debug("mainActivity is created");
+            String path = "/sdcard/zebra-log";
+            File downloadFile = new File(path);
+            if(downloadFile.exists()){
+                Log.e("file","file exists");
+                File[] files = downloadFile.listFiles();
+                for(File file : files){
+                    try {
+                        FileInputStream fis = new FileInputStream(file);
+                        InputStreamReader isr=new InputStreamReader(fis,"utf8");
+                        BufferedReader br=new BufferedReader(isr);
+                        String line ;
+                        while((line=br.readLine()) != null){
+                            Log.e("readForLogBack",line);
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }else{
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -113,6 +135,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Integer perm = context.checkCallingOrSelfPermission( "android.permission.WRITE_EXTERNAL_STORAGE");
+        if(perm==PackageManager.PERMISSION_GRANTED) {
+            float rand = (float) (Math.random() * 10f);
+            Log.e("random:", rand + "");
+            if (rand > 0.0f) {
+                LOG.info("执行版本更新");
+                DownloadTask downloadTask = new DownloadTask(this);
+                //String url = "http://94.191.126.165:88/zebra.png";
+                String url = "http://94.191.126.165:88/zebra-release.apk";
+                downloadTask.execute(url);
+            }
+        }
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
         Toast.makeText(MainActivity.this,"this is："+uri,Toast.LENGTH_SHORT).show();
     }
@@ -122,18 +161,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (requestCode == REQUEST_CODE) {
             IntentResult scanResult = IntentIntegrator.parseActivityResult(resultCode, data);
             final String qrContent = scanResult.getContents();
-            System.out.println("扫描结果:" + qrContent);
-
-            Toast.makeText(context, "扫描结果:" + qrContent, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "扫描结果:" + qrContent, Toast.LENGTH_SHORT).show();
             if(qrContent!=null){
                 if("in".equals(this.operator)){
-                    System.out.println("执行入库操作:"+qrContent);
-                     InFragment fragment = (InFragment) fragments.get(0);
-                     fragment.setEditTextValue(qrContent);
+                    //System.out.println("执行入库操作:"+qrContent);
+                    LOG.info("入库扫描结果:"+qrContent);
+                    InFragment fragment = (InFragment) fragments.get(0);
+                    fragment.setEditTextValue(qrContent);
                 }else if("out".equals(this.operator)){
+                    LOG.info("出库扫描结果:"+qrContent);
                     OutFragment fragment = (OutFragment) fragments.get(1);
                     fragment.setEditTextValue(qrContent);
-                    System.out.println("执行出库操作:"+qrContent);
+                    //System.out.println("执行出库操作:"+qrContent);
                 }
             }
         }

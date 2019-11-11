@@ -31,6 +31,9 @@ import android.widget.Toast;
 import com.ghao.developer.offline.dao.DBHelper;
 import com.ghao.developer.offline.dao.SyncDao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +59,7 @@ public class SyncFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final Logger LOG = LoggerFactory.getLogger(SyncFragment.class);
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -123,7 +127,8 @@ public class SyncFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = view.findViewById(R.id.listview_textview);
-                Toast.makeText(context, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
+                LOG.info("查看详细列表,编号:"+textView.getText());
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("title",textView.getText());
                 startActivity(intent);
@@ -163,6 +168,7 @@ public class SyncFragment extends Fragment {
         }
     };
     private void execSync(){
+        LOG.info("执行同步动作");
         final ProgressBar progressBar = getActivity().findViewById(R.id.progressbar);
         progressBar.setMax(200);
         progressBar.setProgress(20);

@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.ghao.developer.offline.dao.OutDao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +34,7 @@ public class OutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final Logger LOG = LoggerFactory.getLogger(OutFragment.class);
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,6 +80,7 @@ public class OutFragment extends Fragment {
         @Override
         public void onClick(View view) {
             MainActivity activity = (MainActivity)getActivity();
+            LOG.info("打开出库扫码");
             activity.Scanner("out");
         }
     };
@@ -106,10 +111,12 @@ public class OutFragment extends Fragment {
             contentValues.put("rksj",new Date().getTime());
             contentValues.put("czr","ghao");
             if("".equals(ckdbh)){
+                LOG.info("出库单编号为空");
                 Toast.makeText(context, "出库单编号为空", Toast.LENGTH_SHORT).show();
             }else{
                 long resultNumber = outDao.actionOut(contentValues);
                 if(resultNumber>0){
+                    LOG.info("出库成功,内容:"+contentValues.toString());
                     Toast.makeText(context, "出库成功", Toast.LENGTH_SHORT).show();
                     ckdbhText.setText(null);
                 }

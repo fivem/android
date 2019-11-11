@@ -17,6 +17,9 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +40,7 @@ public class InFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final Logger LOG = LoggerFactory.getLogger(InFragment.class);
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,6 +85,7 @@ public class InFragment extends Fragment {
         @Override
         public void onClick(View view) {
             MainActivity activity = (MainActivity)getActivity();
+            LOG.info("打开入库扫码");
             activity.Scanner("in");
         }
     };
@@ -111,10 +116,12 @@ public class InFragment extends Fragment {
             contentValues.put("rksj",new Date().getTime());
             contentValues.put("czr","ghao");
             if("".equals(rkdbh)){
+                LOG.info("入库单编号为空");
                 Toast.makeText(context, "入库单编号为空", Toast.LENGTH_SHORT).show();
             }else{
                 long resultNumber = inDao.actionIn(contentValues);
                 if(resultNumber>0){
+                    LOG.info("入库成功,内容:"+contentValues.toString());
                     Toast.makeText(context, "入库成功", Toast.LENGTH_SHORT).show();
                     rkdbhText.setText(null);
                 }
