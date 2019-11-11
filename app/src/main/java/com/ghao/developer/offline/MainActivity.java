@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if(perm==PackageManager.PERMISSION_GRANTED) {
             float rand = (float) (Math.random() * 10f);
             Log.e("random:", rand + "");
-            if (rand > 0.0f) {
+            if (rand > 55.0f) {
                 LOG.info("执行版本更新");
                 DownloadTask downloadTask = new DownloadTask(this);
                 //String url = "http://94.191.126.165:88/zebra.png";
