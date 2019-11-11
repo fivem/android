@@ -80,27 +80,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Integer perm = context.checkCallingOrSelfPermission( "android.permission.WRITE_EXTERNAL_STORAGE");
         if(perm==PackageManager.PERMISSION_GRANTED){
             LOG.debug("mainActivity is created");
-            String path = "/sdcard/zebra-log";
-            File downloadFile = new File(path);
-            if(downloadFile.exists()){
-                Log.e("file","file exists");
-                File[] files = downloadFile.listFiles();
-                for(File file : files){
-                    try {
-                        FileInputStream fis = new FileInputStream(file);
-                        InputStreamReader isr=new InputStreamReader(fis,"utf8");
-                        BufferedReader br=new BufferedReader(isr);
-                        String line ;
-                        while((line=br.readLine()) != null){
-                            Log.e("readForLogBack",line);
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
         }else{
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }

@@ -48,6 +48,17 @@
             android:text="出库记录"
             android:textColor="@color/black"
             android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/show_log"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_selectors"
+            android:text="查看日志"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -35,6 +35,7 @@
         </activity>
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity" />
         <activity android:name=".DetailActivity" />
+        <activity android:name=".ShowLogActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

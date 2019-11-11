@@ -1,34 +1,26 @@
 package com.ghao.developer.offline;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ghao.developer.offline.dao.DBHelper;
 import com.ghao.developer.offline.dao.SyncDao;
 
 import org.slf4j.Logger;
@@ -114,6 +106,9 @@ public class SyncFragment extends Fragment {
         //出库记录按钮点击事件
         Button recordsOut = (Button) view.findViewById(R.id.records_out);
         recordsOut.setOnClickListener(recordsOutButtonClickListener);
+        //查看日志
+        Button showLog = (Button) view.findViewById(R.id.show_log);
+        showLog.setOnClickListener(showLogButtonClickListener);
         //同步按钮点击事件
         Button sycnBtn = (Button) view.findViewById(R.id.sync_btn);
         sycnBtn.setOnClickListener(syncBtnButtonClickListener);
@@ -165,6 +160,14 @@ public class SyncFragment extends Fragment {
           }else{
               Toast.makeText(SyncFragment.super.getContext(), "网络未连接,请检查网络连接状态", Toast.LENGTH_SHORT).show();
           };
+        }
+    };
+    private final Button.OnClickListener showLogButtonClickListener = new Button.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            Intent in = new Intent(context,ShowLogActivity.class);
+            startActivity(in);
         }
     };
     private void execSync(){
