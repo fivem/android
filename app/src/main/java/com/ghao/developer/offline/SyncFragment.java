@@ -1,8 +1,11 @@
 package com.ghao.developer.offline;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -57,7 +60,7 @@ public class SyncFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Context content;
+    private Context context;
     private ListView listView;
     private OnFragmentInteractionListener mListener;
     private SyncDao syncDao;
@@ -88,8 +91,8 @@ public class SyncFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.content = getActivity();
-        syncDao = new SyncDao(content);
+        this.context = getActivity();
+        syncDao = new SyncDao(context);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -120,8 +123,8 @@ public class SyncFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView textView = view.findViewById(R.id.listview_textview);
-                Toast.makeText(content, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(content, DetailActivity.class);
+                Toast.makeText(context, "点击:"+textView.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("title",textView.getText());
                 startActivity(intent);
             }
@@ -147,36 +150,45 @@ public class SyncFragment extends Fragment {
         }
     };
     private final Button.OnClickListener syncBtnButtonClickListener = new Button.OnClickListener(){
+
         @Override
         public void onClick(View view) {
-           final ProgressBar progressBar = getActivity().findViewById(R.id.progressbar);
-            progressBar.setMax(200);
-            progressBar.setProgress(20);
-            progressBar.setVisibility(View.VISIBLE); //To show ProgressBar
-            getActivity().findViewById(R.id.progressMusk).setVisibility(View.VISIBLE);
-            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            new Thread(){
-                int index = 20;
-                @Override
-                public void run(){
-                    while (index <= 200){
-                        progressBar.setProgress(index);
-                        index+=10;
-                        try {
-                            sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                  //  progressBar.setVisibility(View.GONE);
-
-                    Message message = new Message();
-                    message.what = COMPLETED;
-                    mHandler.sendMessage(message);
-                }
-            }.start();
+            //检查网络连接状态
+          MainActivity mainActivity = (MainActivity ) getActivity();
+          if(mainActivity.isNetworkConnected(SyncFragment.super.getContext())){
+              showDialog("提示","是否执行同步?");
+          }else{
+              Toast.makeText(SyncFragment.super.getContext(), "网络未连接,请检查网络连接状态", Toast.LENGTH_SHORT).show();
+          };
         }
     };
+    private void execSync(){
+        final ProgressBar progressBar = getActivity().findViewById(R.id.progressbar);
+        progressBar.setMax(200);
+        progressBar.setProgress(20);
+        progressBar.setVisibility(View.VISIBLE); //To show ProgressBar
+        getActivity().findViewById(R.id.progressMusk).setVisibility(View.VISIBLE);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        new Thread(){
+            int index = 20;
+            @Override
+            public void run(){
+                while (index <= 200){
+                    progressBar.setProgress(index);
+                    index+=10;
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //  progressBar.setVisibility(View.GONE);
+                Message message = new Message();
+                message.what = COMPLETED;
+                mHandler.sendMessage(message);
+            }
+        }.start();
+    }
     public List<Map<String, Object>> getInData(){
         Cursor cursor = syncDao.getInData();
         return getData(cursor);
@@ -203,6 +215,29 @@ public class SyncFragment extends Fragment {
             list.add(map);
         }
         return list;
+    }
+
+    private void showDialog(String title,String msg){
+        boolean result = false;
+        AlertDialog ad = new AlertDialog.Builder(this.context)
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton("确定",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        execSync();
+                    }
+                })
+                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .create();
+        ad.show();
     }
 
     private Handler mHandler = new Handler(){

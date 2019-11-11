@@ -76,7 +76,7 @@ public class OutFragment extends Fragment {
         @Override
         public void onClick(View view) {
             MainActivity activity = (MainActivity)getActivity();
-            activity.Scanner("in");
+            activity.Scanner("out");
         }
     };
 

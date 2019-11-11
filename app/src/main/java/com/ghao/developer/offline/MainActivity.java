@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                      InFragment fragment = (InFragment) fragments.get(0);
                      fragment.setEditTextValue(qrContent);
                 }else if("out".equals(this.operator)){
+                    OutFragment fragment = (OutFragment) fragments.get(1);
+                    fragment.setEditTextValue(qrContent);
                     System.out.println("执行出库操作:"+qrContent);
                 }
             }
