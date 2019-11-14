@@ -21,7 +21,10 @@ public class SyncDao {
     public Cursor getDataByStatus(String status){
         return mDBHelper.query("select * from rkd where status='"+status+"' order by rksj desc");
     }
-    public Cursor getDetailByRkdbh(String rkdbh){
-        return mDBHelper.query("select * from rkd where rkdbh='"+rkdbh+"'");
+    public Cursor getDetailByRkdbh(String kdbh){
+        return mDBHelper.query("select * from rkd where rkdbh='"+kdbh+"'");
+    }
+    public Cursor getDetailByCkdbh(String kdbh){
+        return mDBHelper.query("select * from ckd where ckdbh='"+kdbh+"'");
     }
 }

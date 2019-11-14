@@ -25,13 +25,21 @@ public class ShowLogActivity extends AppCompatActivity {
         if(downloadFile.exists()){
             String content = "" ;
             File[] files = downloadFile.listFiles();
+            int i=0;
             for(File file : files){
+                if(i>=2){
+                    break;
+                }
+                i++;
                 try {
                     FileInputStream fis = new FileInputStream(file);
                     InputStreamReader isr=new InputStreamReader(fis,"utf8");
                     BufferedReader br=new BufferedReader(isr);
                     String line ;
-                    content = file.getName() + "\n";
+                    if(!"".equals(content)){
+                        content += "---------------------------------\n";
+                    }
+                    content += file.getName() + "\n";
                     while((line=br.readLine()) != null){
                         Log.e("readForLogBack",line);
                         line +="\n";

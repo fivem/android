@@ -58,6 +58,7 @@ public class SyncFragment extends Fragment {
     private String mParam2;
     private Context context;
     private ListView listView;
+    public String action = "in";
     private OnFragmentInteractionListener mListener;
     private SyncDao syncDao;
     private static final int COMPLETED = 0;
@@ -126,6 +127,7 @@ public class SyncFragment extends Fragment {
                 LOG.info("查看详细列表,编号:"+textView.getText());
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("title",textView.getText());
+                intent.putExtra("action",action);
                 startActivity(intent);
             }
         });
@@ -139,6 +141,7 @@ public class SyncFragment extends Fragment {
         public void onClick(View view) {
             List<Map<String, Object>> list = getInData();
             listView.setAdapter(new ListViewAdapter(getActivity(), list));
+            action = "in";
         }
     };
     private final Button.OnClickListener recordsOutButtonClickListener = new Button.OnClickListener() {
@@ -147,6 +150,7 @@ public class SyncFragment extends Fragment {
         public void onClick(View view) {
             List<Map<String, Object>> list = getOutData();
             listView.setAdapter(new ListViewAdapter(getActivity(), list));
+            action="out";
         }
     };
     private final Button.OnClickListener syncBtnButtonClickListener = new Button.OnClickListener(){

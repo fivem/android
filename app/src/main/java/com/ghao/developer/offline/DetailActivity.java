@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ghao.developer.offline.dao.SyncDao;
 
@@ -20,12 +21,20 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
+        Cursor cursor ;
         Intent intent = getIntent();
-        String rkdbh = intent.getStringExtra("title");
-        setTitle(rkdbh+"明细");
+        String kdbh = intent.getStringExtra("title");
+        String action = intent.getStringExtra("action");
+        setTitle(kdbh+"明细");
+        TextView textView = findViewById(R.id.rkdbh);
         SyncDao syncDao = new SyncDao(this);
-        Cursor cursor = syncDao.getDetailByRkdbh(rkdbh);
+        if("in".equals(action)){
+            textView.setText("入库单编号");
+            cursor = syncDao.getDetailByRkdbh(kdbh);
+        }else{
+            textView.setText("出库单编号");
+            cursor = syncDao.getDetailByCkdbh(kdbh);
+        }
         while(cursor.moveToNext()){
             String htbh = cursor.getString(2);
             String pcbh = cursor.getString(3);
@@ -36,7 +45,7 @@ public class DetailActivity extends AppCompatActivity {
             String time = dateFormat.format(new Date(czsj)) ;
 
             EditText rkdbhText = findViewById(R.id.rkdbhText);
-            rkdbhText.setText(rkdbh);
+            rkdbhText.setText(kdbh);
 
             EditText htbhText = findViewById(R.id.htbhText);
             htbhText.setText(htbh);
@@ -48,6 +57,4 @@ public class DetailActivity extends AppCompatActivity {
             czsjText.setText(time);
         }
     }
-
-
 }
